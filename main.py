@@ -6,7 +6,7 @@ import numpy as np
 from sklearn import linear_model, preprocessing
 
 data = pd.read_csv("car.data")
-print(data.head())
+# print(data.head())
 
 # transform non_numerical data into numerical
 le = preprocessing.LabelEncoder()
@@ -26,3 +26,20 @@ y = list(cls)
 
 # seperate the data into train and test
 x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(x,y,test_size = 0.1)
+
+model = KNeighborsClassifier(9)
+
+model.fit(x_train, y_train)
+acc = model.score(x_test, y_test)
+print(acc)
+
+predicted = model.predict(x_test)
+names = ["unacc", "acc", "good", "vgood"]
+
+# Print the result
+for i in range(len(predicted)):
+    print("Predicted: ", names[predicted[i]], "Data: ", x_test[i], "Actual: ", names[y_test[i]])
+
+    # print the neighbors of each data points
+    n = model.kneighbors([x_test[i]], 9, True)
+    print(n)
